@@ -229,38 +229,45 @@ public class Controller : MonoBehaviour
         rounds.text = "Rounds: " + roundCount;
     }
 
-    public void FindSelectableTiles(bool cop)
+    public void FindSelectableTiles(bool cop) 
+        //el algoritmo BFS. Se valorará que
+        //(1) las fichas no puedan moverse a su casilla actual y
+        //(2) un policía no pueda moverse a una casilla que requiera el paso por la casilla ocupada por el otro policía.
     {
-                 
-        int indexcurrentTile;        
 
-        if (cop==true)
-            indexcurrentTile = cops[clickedCop].GetComponent<CopMove>().currentTile;
+        int indexcurrentTile;//casilla en la que esta la ficha actualmente        
+
+        if (cop == true)
+            indexcurrentTile = cops[clickedCop].GetComponent<CopMove>().currentTile;//casilla si es un policia
         else
-            indexcurrentTile = robber.GetComponent<RobberMove>().currentTile;
+            indexcurrentTile = robber.GetComponent<RobberMove>().currentTile;//casilla si es un ladrón
 
         //La ponemos rosa porque acabamos de hacer un reset
         tiles[indexcurrentTile].current = true;
 
-        //Cola para el BFS
-        Queue<Tile> nodes = new Queue<Tile>();
 
-        //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
-        //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        int indiceAdyacente;
+        int indiceAdyacente2;
+
+        for (int i = 0; i < tiles[indexcurrentTile].adjacency.Count; i++)
         {
-            tiles[i].selectable = true;
+            indiceAdyacente = tiles[indexcurrentTile].adjacency[i];//accedemos a las casillas de adyacency de la current
+            tiles[indiceAdyacente].selectable = true;//ponemos en true las que coincidan con el indice 
+
+            //ahora buscamos las casillas adyacentes a las casillas adyacentes de la current
+
+            for (int j = 0; j < tiles[indiceAdyacente].adjacency.Count; j++)// para cada casilla adyacente de la current
+
+            {
+
+                indiceAdyacente2 = tiles[indiceAdyacente].adjacency[j];
+                tiles[indiceAdyacente2].selectable = true;
+
+
+            }
+
+
+
         }
-
-
     }
-    
-   
-    
-
-    
-
-   
-
-       
 }
