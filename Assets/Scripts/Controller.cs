@@ -46,16 +46,59 @@ public class Controller : MonoBehaviour
         robber.GetComponent<RobberMove>().currentTile=Constants.InitialRobber;           
     }
 
-    public void InitAdjacencyLists()
+    public void InitAdjacencyLists() 
+        //crea la matriz de adyacencia y rellena la lista adjacency de cada objeto (Tile).
     {
         //Matriz de adyacencia
+
         int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
 
         //TODO: Inicializar matriz a 0's
 
+        for (int i = 0; i < Constants.NumTiles; i++)
+        {
+            for (int j = 0; j < Constants.NumTiles; j++) // bucle hasta el número máximo de tiles
+            {
+                matriu[i, j] = 0; // inicializamos siempre a 0
+            }
+        }
+
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
 
+        for (int i = 0; i < Constants.NumTiles; i++)
+        {
+            for (int j = 0; j < Constants.NumTiles; j++)
+            {
+                if (j == i + 1 && j % Constants.TilesPerRow != 0)
+                {
+                    matriu[i, j] = 1;
+                }
+                if (j == i - 1 && (j + 1) % Constants.TilesPerRow != 0)
+                {
+                    matriu[i, j] = 1;
+                }
+                if (j == i + Constants.TilesPerRow)
+                {
+                    matriu[i, j] = 1;
+                }
+                if (j == i - Constants.TilesPerRow)
+                {
+                    matriu[i, j] = 1;
+                }
+            }
+        }
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
+
+        for (int i = 0; i < Constants.NumTiles; i++)
+        {
+            for (int j = 0; j < Constants.NumTiles; j++)
+            {
+                if (matriu[i, j] == 1)
+                {
+                    tiles[i].adjacency.Add(j);
+                }
+            }
+        }
 
     }
 
